@@ -11,17 +11,22 @@ while [[ -z "$api_key" ]]; do
     read -p "Enter your Pterodactyl API key: " api_key
 done
 
-# Optional settings with defaults
-read -p "Enter your panel base URL [https://panel.slothhosting.org]: " panel_url
-panel_url=${panel_url:-https://panel.slothhosting.org}
+# Prompt for panel base URL (required, no default)
+read -p "Enter your panel base URL (e.g. https://panel.example.com): " panel_url
+while [[ -z "$panel_url" ]]; do
+    echo "❗ Panel base URL is required!"
+    read -p "Enter your panel base URL (e.g. https://panel.example.com): " panel_url
+done
 
+# Optional: backups folder with default
 read -p "Enter path to the backups folder [/var/lib/pterodactyl/backups]: " backup_folder
 backup_folder=${backup_folder:-/var/lib/pterodactyl/backups}
 
+# Optional: scan interval
 read -p "Enter scan interval in seconds [300]: " sleep_interval
 sleep_interval=${sleep_interval:-300}
 
-# Create config dir and write config.yml
+# Create config directory and write config.yml
 sudo mkdir -p /etc/pterocleaner
 sudo tee /etc/pterocleaner/config.yml > /dev/null <<EOF
 api_key: "${api_key}"
@@ -30,22 +35,22 @@ backup_folder: "${backup_folder}"
 sleep_interval: ${sleep_interval}
 EOF
 
-# Download cleaner script
+# Download main Python script
 echo "📥 Downloading PteroCleaner..."
-sudo curl -sL https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/pterocleaner/main/pterocleaner.py -o /etc/pterocleaner/pterocleaner.py
+sudo curl -sL https://raw.githubusercontent.com/Isaac-Cooper/PteroCleaner/main/pterocleaner.py -o /etc/pterocleaner/pterocleaner.py
 sudo chmod +x /etc/pterocleaner/pterocleaner.py
 
-# Install Python + deps
+# Install Python and dependencies
 echo "📦 Installing dependencies..."
 sudo apt update
 sudo apt install -y python3 python3-pip
 sudo pip3 install requests pyyaml
 
-# Download systemd service
+# Download systemd unit
 echo "⚙️  Setting up systemd service..."
-sudo curl -sL https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/pterocleaner/main/pterocleaner.service -o /etc/systemd/system/pterocleaner.service
+sudo curl -sL https://raw.githubusercontent.com/Isaac-Cooper/PteroCleaner/main/pterocleaner.service -o /etc/systemd/system/pterocleaner.service
 
-# Reload systemd and enable
+# Enable and start the service
 sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
 sudo systemctl enable pterocleaner
