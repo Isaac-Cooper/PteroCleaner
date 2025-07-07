@@ -122,7 +122,7 @@ You’re running a node with `/var/lib/pterodactyl/backups` filling up. Over tim
 
 ## 📄 License
 
-MIT License — feel free to use, modify, and contribute!
+GNU General Public License v3.0 — feel free to use, modify, and contribute!
 
 ---
 
