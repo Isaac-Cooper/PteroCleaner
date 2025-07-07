@@ -1,0 +1,11 @@
+[Unit]
+Description=PteroCleaner - Orphaned backup cleaner for Pterodactyl
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /etc/pterocleaner/pterocleaner.py
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
