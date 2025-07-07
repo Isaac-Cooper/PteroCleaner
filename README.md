@@ -23,7 +23,7 @@ It compares local backup files (e.g., `UUID.tar.gz`) in a specified folder with 
 You can install PteroCleaner with a **single command**:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/pterocleaner/main/install.sh)
+bash <(curl -s https://raw.githubusercontent.com/Isaac-Cooper/PteroCleaner/main/install.sh)
 ```
 
 This script will:
