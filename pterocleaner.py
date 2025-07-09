@@ -97,7 +97,7 @@ def main_loop():
                 print(f"⏳ Sleeping {SLEEP_INTERVAL} seconds...\n")
                 time.sleep(SLEEP_INTERVAL)
         except Exception as E:
-            print("🟠 Error: " + E)
+            print("🟠 Error: " + str(E))
 
 if __name__ == "__main__":
     try:
