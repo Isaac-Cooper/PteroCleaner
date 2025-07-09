@@ -30,7 +30,6 @@ def get_all_servers():
         data = response.json()
         servers += data["data"]
         url = data["meta"]["pagination"]["links"].get("next")
-        print([srv["attributes"]["identifier"] for srv in servers])
     return [srv["attributes"]["identifier"] for srv in servers]  # Corrected: use identifier
 
 def get_all_backups(server_identifier):
@@ -38,15 +37,13 @@ def get_all_backups(server_identifier):
     url = f"{PANEL_BASE_URL}/api/client/servers/{server_identifier}/backups"
     while url:
         response = requests.get(url, headers=HEADERS)
-        if response.status_code not in (200):
+        if response.status_code not in [200]:
             print(f"⚠️  Skipping server {server_identifier}: {response.status_code} error.")
             break
         response.raise_for_status()
         data = response.json()
         backups += data["data"]
         url = data["meta"]["pagination"]["links"].get("next")
-    print(backups)
-    print([backup["attributes"]["uuid"] for backup in backups])
     return [backup["attributes"]["uuid"] for backup in backups]
 
 def list_backup_files():
@@ -78,18 +75,13 @@ def main_loop():
         
                 all_server_ids = get_all_servers()
                 all_known_backup_ids = set()
-                print("1")
                 for server_id in all_server_ids:
-                    print("1.1")
                     backup_ids = get_all_backups(server_id)
-                    print("1.2")
                     all_known_backup_ids.update(backup_ids)
-                print("2")
                 orphaned = [
                     backup_id for backup_id in shared_ids
                     if backup_id not in all_known_backup_ids
                 ]
-                print("3")
                 if orphaned:
                     print("🟠 Found orphaned backups not in API:")
                     for backup_id in orphaned:
