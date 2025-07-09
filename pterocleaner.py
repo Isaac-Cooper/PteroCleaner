@@ -96,8 +96,8 @@ def main_loop():
                 old_backup_ids = new_backup_ids
                 print(f"⏳ Sleeping {SLEEP_INTERVAL} seconds...\n")
                 time.sleep(SLEEP_INTERVAL)
-            except:
-                pass
+        except:
+            pass
 
 if __name__ == "__main__":
     try:
