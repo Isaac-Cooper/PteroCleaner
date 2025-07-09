@@ -45,6 +45,7 @@ def get_all_backups(server_identifier):
         data = response.json()
         backups += data["data"]
         url = data["meta"]["pagination"]["links"].get("next")
+    print([backup["attributes"]["uuid"] for backup in backups])
     return [backup["attributes"]["uuid"] for backup in backups]
 
 def list_backup_files():
@@ -76,16 +77,16 @@ def main_loop():
         
                 all_server_ids = get_all_servers()
                 all_known_backup_ids = set()
-        
+                print("1")
                 for server_id in all_server_ids:
                     backup_ids = get_all_backups(server_id)
                     all_known_backup_ids.update(backup_ids)
-        
+                print("2")
                 orphaned = [
                     backup_id for backup_id in shared_ids
                     if backup_id not in all_known_backup_ids
                 ]
-        
+                print("3")
                 if orphaned:
                     print("🟠 Found orphaned backups not in API:")
                     for backup_id in orphaned:
