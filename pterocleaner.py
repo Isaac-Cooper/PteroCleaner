@@ -37,7 +37,7 @@ def get_all_backups(server_identifier):
     url = f"{PANEL_BASE_URL}/api/client/servers/{server_identifier}/backups"
     while url:
         response = requests.get(url, headers=HEADERS)
-        if response.status_code in (403, 409):
+        if response.status_code not in (200):
             print(f"⚠️  Skipping server {server_identifier}: {response.status_code} error.")
             break
         response.raise_for_status()
@@ -66,34 +66,38 @@ def main_loop():
     old_backup_ids = set()
 
     while True:
-        print("🔍 Scanning backups folder and checking API...")
-
-        new_backup_ids = list_backup_files()
-        shared_ids = old_backup_ids & new_backup_ids
-
-        all_server_ids = get_all_servers()
-        all_known_backup_ids = set()
-
-        for server_id in all_server_ids:
-            backup_ids = get_all_backups(server_id)
-            all_known_backup_ids.update(backup_ids)
-
-        orphaned = [
-            backup_id for backup_id in shared_ids
-            if backup_id not in all_known_backup_ids
-        ]
-
-        if orphaned:
-            print("🟠 Found orphaned backups not in API:")
-            for backup_id in orphaned:
-                print(f" - {backup_id}.tar.gz")
-            delete_orphaned_backups(orphaned)
-        else:
-            print("✅ No orphaned backups found.")
-
-        old_backup_ids = new_backup_ids
-        print(f"⏳ Sleeping {SLEEP_INTERVAL} seconds...\n")
-        time.sleep(SLEEP_INTERVAL)
+        try:
+            while True:
+                print("🔍 Scanning backups folder and checking API...")
+        
+                new_backup_ids = list_backup_files()
+                shared_ids = old_backup_ids & new_backup_ids
+        
+                all_server_ids = get_all_servers()
+                all_known_backup_ids = set()
+        
+                for server_id in all_server_ids:
+                    backup_ids = get_all_backups(server_id)
+                    all_known_backup_ids.update(backup_ids)
+        
+                orphaned = [
+                    backup_id for backup_id in shared_ids
+                    if backup_id not in all_known_backup_ids
+                ]
+        
+                if orphaned:
+                    print("🟠 Found orphaned backups not in API:")
+                    for backup_id in orphaned:
+                        print(f" - {backup_id}.tar.gz")
+                    delete_orphaned_backups(orphaned)
+                else:
+                    print("✅ No orphaned backups found.")
+        
+                old_backup_ids = new_backup_ids
+                print(f"⏳ Sleeping {SLEEP_INTERVAL} seconds...\n")
+                time.sleep(SLEEP_INTERVAL)
+            except:
+                pass
 
 if __name__ == "__main__":
     try:
