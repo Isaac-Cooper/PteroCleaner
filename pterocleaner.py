@@ -99,8 +99,8 @@ def main_loop():
                 time.sleep(SLEEP_INTERVAL)
         except Exception as E:
             print("🟠 Error: " + str(E))
-            print(f"⏳ Sleeping {SLEEP_INTERVAL} seconds...\n")
-            time.sleep(SLEEP_INTERVAL)
+            print(f"⏳ Sleeping 20 seconds...\n")
+            time.sleep(20)
             
 
 if __name__ == "__main__":
