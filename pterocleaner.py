@@ -30,6 +30,7 @@ def get_all_servers():
         data = response.json()
         servers += data["data"]
         url = data["meta"]["pagination"]["links"].get("next")
+        print([srv["attributes"]["identifier"] for srv in servers])
     return [srv["attributes"]["identifier"] for srv in servers]  # Corrected: use identifier
 
 def get_all_backups(server_identifier):
@@ -98,6 +99,9 @@ def main_loop():
                 time.sleep(SLEEP_INTERVAL)
         except Exception as E:
             print("🟠 Error: " + str(E))
+            print(f"⏳ Sleeping {SLEEP_INTERVAL} seconds...\n")
+            time.sleep(SLEEP_INTERVAL)
+            
 
 if __name__ == "__main__":
     try:
