@@ -45,6 +45,7 @@ def get_all_backups(server_identifier):
         data = response.json()
         backups += data["data"]
         url = data["meta"]["pagination"]["links"].get("next")
+    print(backups)
     print([backup["attributes"]["uuid"] for backup in backups])
     return [backup["attributes"]["uuid"] for backup in backups]
 
@@ -79,7 +80,9 @@ def main_loop():
                 all_known_backup_ids = set()
                 print("1")
                 for server_id in all_server_ids:
+                    print("1.1")
                     backup_ids = get_all_backups(server_id)
+                    print("1.2")
                     all_known_backup_ids.update(backup_ids)
                 print("2")
                 orphaned = [
