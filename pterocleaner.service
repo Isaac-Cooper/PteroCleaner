@@ -3,8 +3,11 @@ Description=PteroCleaner - Orphaned backup cleaner for Pterodactyl
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 /etc/pterocleaner/pterocleaner.py
+Type=simple
+WorkingDirectory=/etc/pterocleaner
+ExecStart=/etc/pterocleaner/venv/bin/python /etc/pterocleaner/pterocleaner.py
 Restart=always
+RestartSec=5
 User=root
 
 [Install]
