@@ -4,6 +4,7 @@
 
 It compares local backup files (e.g., `UUID.tar.gz`) in a specified folder with backups listed in the Pterodactyl Panel API. If a backup exists locally but not in the panel, and it persists for two consecutive scans, it will be automatically deleted.
 
+Please Note: PteroCleaner may have bugs and may delete backups by accident, use at your own risk.
 ---
 
 ## 🚀 Features
