@@ -54,7 +54,9 @@ sudo chmod +x /etc/pterocleaner/pterocleaner.py
 
 # === Step 4: Install dependencies and create venv ===
 echo "📦 Installing Python and virtual environment..."
-sudo apt update
+if ! sudo apt update; then
+    echo "⚠️ apt update failed — continuing anyway..."
+fi
 sudo apt install -y python3 python3-venv curl
 
 echo "🐍 Creating virtual environment..."
