@@ -125,6 +125,7 @@ journalctl -u pterocleaner -f
 **Database errors:**
 - No deletion will occur
 - Fix config.yml
+- Ensure that the database is listening on 0.0.0.0 rather than 172.0.0.1
 
 ---
 
