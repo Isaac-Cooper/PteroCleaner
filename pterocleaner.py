@@ -32,7 +32,9 @@ def db_connect():
         host=DB_HOST,
         user=DB_USER,
         password=DB_PASS,
-        database=DB_NAME
+        database=DB_NAME,
+        charset='utf8mb4',
+        collation='utf8mb4_general_ci'
     )
 
 def get_valid_backups():
